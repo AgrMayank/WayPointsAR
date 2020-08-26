@@ -4,12 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using TMPro;
+using UnityEngine.UI;
+
 
 [RequireComponent(typeof(ARPlaneManager))]
 public class PlaceObjectOnPlane : MonoBehaviour 
 {
     public GameObject placedPrefab;
+    public GameObject textPrefab;
     private GameObject placedObject;
+    private GameObject placedText;
+
+    public Text Text_input_field;
 
     public ARPlaneManager planeManager;
 
@@ -18,6 +25,7 @@ public class PlaceObjectOnPlane : MonoBehaviour
     int colliders = 0;
 
     public Camera cam;
+    TextMeshPro textmeshPro;
 
     private void Awake() 
     {
@@ -33,33 +41,11 @@ public class PlaceObjectOnPlane : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider collider)
-    {
-        // colliders++;
-        // PlaceObj();
-    }
-
-    void OnTriggerExit(Collider collider)
-    {
-        // colliders--;
-        // PlaceObj();
-    }
-
-    // void Update() 
-    // {
-        // PlaceObj();
-    // }
-
     public void PlaceObj()
     {
         if(toPlace)
         {
-            // Vector3 Dist = Camera.main.transform.position - placedObject.transform.position;
-
-            // if(Mathf.Abs(Dist.x) >= 1.5f || Mathf.Abs(Dist.z) >= 1.5f)
-            // {
-                Instantiate(placedPrefab, cam.transform.position + cam.transform.forward, Quaternion.Euler(0, cam.transform.eulerAngles.y, 0));
-            // }
+            Instantiate(placedPrefab, cam.transform.position + cam.transform.forward, Quaternion.Euler(0, cam.transform.eulerAngles.y, 0));
         }
     }
 
@@ -68,4 +54,21 @@ public class PlaceObjectOnPlane : MonoBehaviour
         toPlace = !toPlace;
     }
 
+    public void PlaceText()
+    {
+        if (toPlace)
+        {
+            placedText = Instantiate(textPrefab, cam.transform.position + cam.transform.forward, Quaternion.Euler(0, cam.transform.eulerAngles.y, 0));
+            
+            var tmpTxt = placedText.transform.GetChild(1).gameObject;
+
+            textmeshPro = tmpTxt.GetComponent<TextMeshPro>();
+            string inputText = Text_input_field.text.ToString();
+            if (string.IsNullOrWhiteSpace(inputText))
+            {
+                inputText = "Unknown Location";
+            }
+            textmeshPro.SetText(inputText);
+        }
+    }
 }
