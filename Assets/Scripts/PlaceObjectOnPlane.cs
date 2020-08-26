@@ -9,10 +9,15 @@ using UnityEngine.XR.ARSubsystems;
 public class PlaceObjectOnPlane : MonoBehaviour 
 {
     public GameObject placedPrefab;
-
     private GameObject placedObject;
 
     public ARPlaneManager planeManager;
+
+    bool toPlace = true;
+
+    int colliders = 0;
+
+    public Camera cam;
 
     private void Awake() 
     {
@@ -24,8 +29,43 @@ public class PlaceObjectOnPlane : MonoBehaviour
     {
         if(args.added != null && placedObject == null)
         {
-            ARPlane arPlane = args.added[0];
-            placedObject = Instantiate(placedPrefab, arPlane.transform.position, Quaternion.identity);
+            placedObject = Instantiate(placedPrefab, cam.transform.position + cam.transform.forward, Quaternion.Euler(0, cam.transform.eulerAngles.y, 0));
         }
     }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        // colliders++;
+        // PlaceObj();
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        // colliders--;
+        // PlaceObj();
+    }
+
+    // void Update() 
+    // {
+        // PlaceObj();
+    // }
+
+    public void PlaceObj()
+    {
+        if(toPlace)
+        {
+            // Vector3 Dist = Camera.main.transform.position - placedObject.transform.position;
+
+            // if(Mathf.Abs(Dist.x) >= 1.5f || Mathf.Abs(Dist.z) >= 1.5f)
+            // {
+                Instantiate(placedPrefab, cam.transform.position + cam.transform.forward, Quaternion.Euler(0, cam.transform.eulerAngles.y, 0));
+            // }
+        }
+    }
+
+    public void ToggleObjectPlacement()
+    {
+        toPlace = !toPlace;
+    }
+
 }
