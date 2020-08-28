@@ -1,4 +1,4 @@
-# WayPointsAR
+# WayPoints AR
 Drop waypoints along the way in AR.
 
 ![GitHub issues](https://img.shields.io/github/issues/AgrMayank/WayPointsAR?label=Issues&style=flat-square)
